@@ -32,16 +32,16 @@ local function get_formspec(val)
 	return table.concat(fs)
 end
 
-minetest.register_chatcommand('set_saturation', {
+minetest.register_chatcommand('saturation', {
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
 
-		minetest.show_formspec(name, 'set_saturation:fs', get_formspec(current_saturation))
+		minetest.show_formspec(name, 'saturation_adjustment:fs', get_formspec(current_saturation))
 
 		huds[name] = player:hud_add{
 			hud_elem_type = "text",
 			position = {x=0.5, y=0.715},
-			name = "set_saturation:hud",
+			name = "saturation_adjustment:hud",
 			scale = {x = 1.1, y = 1},
 			text = string.format("%1.2f", current_saturation),
 			number = 0xFFFFFF,
@@ -51,7 +51,7 @@ minetest.register_chatcommand('set_saturation', {
 })
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if formname ~= 'set_saturation:fs' then return end
+	if formname ~= 'saturation_adjustment:fs' then return end
 
 	local name = player:get_player_name()
 
