@@ -1,10 +1,10 @@
 
-local storage = minetest.get_mod_storage()
+local storage = core.get_mod_storage()
 
 local current_saturation = tonumber(storage:get("saturation") or 1)
 local huds = {}
 
-minetest.register_on_joinplayer(function(player)
+core.register_on_joinplayer(function(player)
 	player:set_lighting{ saturation = current_saturation }
 end)
 
@@ -32,11 +32,11 @@ local function get_formspec(val)
 	return table.concat(fs)
 end
 
-minetest.register_chatcommand('saturation', {
+core.register_chatcommand('saturation', {
 	func = function(name, param)
-		local player = minetest.get_player_by_name(name)
+		local player = core.get_player_by_name(name)
 
-		minetest.show_formspec(name, 'saturation_adjustment:fs', get_formspec(current_saturation))
+		core.show_formspec(name, 'saturation_adjustment:fs', get_formspec(current_saturation))
 
 		huds[name] = player:hud_add{
 			hud_elem_type = "text",
@@ -50,7 +50,7 @@ minetest.register_chatcommand('saturation', {
 	end
 })
 
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+core.register_on_player_receive_fields(function(player, formname, fields)
 	if formname ~= 'saturation_adjustment:fs' then return end
 
 	local name = player:get_player_name()
@@ -61,7 +61,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	if not fields.saturation then return end
 
-	local scrl = minetest.explode_scrollbar_event(fields.saturation)
+	local scrl = core.explode_scrollbar_event(fields.saturation)
 
 	if scrl.type == 'CHG' then
 		local saturation = scrl.value / 500
